@@ -11,11 +11,11 @@ const NotesListPage = () => {
   }, []);
 
   const getNotes = async () => {
-    
-    const response = await fetch("http://localhost:8000/Notes");
+    console.log("testing");
+    const response = await fetch("/api/notes/");
     const data = await response.json();
 
-    // console.log("data :", data);
+    console.log("data :", data);
     setNotes(data);
   };
 
