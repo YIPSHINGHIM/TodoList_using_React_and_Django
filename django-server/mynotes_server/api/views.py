@@ -65,3 +65,14 @@ def getNote(request,pk):
     Json_note_Data =serializer.data 
     
     return Response(Json_note_Data)
+@api_view(["PUT"])
+def updateNote(request , pk):
+    data = request.data
+    print(data)
+    note = Note.objects.get(id=pk)
+    serializer = NoteSerializer(note, many = False)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response()
