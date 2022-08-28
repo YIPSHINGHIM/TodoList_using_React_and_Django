@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import NotePage from "./pages/NotePage";
 import NotesListPage from "./pages/NotesListPage";
 
-// project tutorial about react
+// project tutorial about react b  
 // https://www.youtube.com/watch?v=6fM3ueN9nYM
 
 function App() {
