@@ -11,18 +11,18 @@ def getRoutes(request):
     routes = [
         {
             'Endpoint': '/notes/',
-            'method': 'GET',
+            'method': ['GET','POST'],
             'body': None,
             'description': 'Returns an array of notes'
         },
         {
             'Endpoint': '/notes/id',
-            'method': 'GET',
+            'method': ['GET','PUT',"DELETE"],
             'body': None,
             'description': 'Returns a single note object'
         },
     ]
-
+    
     return Response(routes)
 
 
