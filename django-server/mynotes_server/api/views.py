@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from .models import Note
 from .serializers import NoteSerializer
-
+from .utils import *
 
 @api_view(["GET"])
 def getRoutes(request):
@@ -124,29 +124,30 @@ def getRoutes(request):
 def NotesListPage(request):
 
     if request.method == "GET":
+        return getNotes (request)
+        # notes = Note.objects.all().order_by('-updated')
+        # # print("notes : ------------------------")
+        # # print(notes)
+        # serializer = NoteSerializer(notes, many = True)
+        # # print("serializer : ------------------------")
+        # # print(serializer.data)
+        # Json_note_Data =serializer.data 
 
-        notes = Note.objects.all().order_by('-updated')
-        # print("notes : ------------------------")
-        # print(notes)
-        serializer = NoteSerializer(notes, many = True)
-        # print("serializer : ------------------------")
-        # print(serializer.data)
-        Json_note_Data =serializer.data 
-
-        return Response(Json_note_Data)
+        # return Response(Json_note_Data)
 
     if request.method == "POST":  # Create note 
-        data = request.data
-        # print(data)
+        return CreateNote(request)
+        # data = request.data
+        # # print(data)
 
-        note = Note.objects.create(
-            body = data["body"]
-        )   
+        # note = Note.objects.create(
+        #     body = data["body"]
+        # )   
 
-        serializer = NoteSerializer(note, many = False)
-        Json_note_Data =serializer.data  
+        # serializer = NoteSerializer(note, many = False)
+        # Json_note_Data =serializer.data  
         
-        return Response(Json_note_Data)
+        # return Response(Json_note_Data)
 
 
 # * notes/<id> (GET,PUT,DELETE)
@@ -156,27 +157,30 @@ def NotePage(request,pk):
 
     # GET note
     if request.method == "GET": 
-        notes = Note.objects.get(id = pk)
-        serializer = NoteSerializer(notes, many = False)
-        Json_note_Data =serializer.data 
+        return getNote(request,pk)
+        # notes = Note.objects.get(id = pk)
+        # serializer = NoteSerializer(notes, many = False)
+        # Json_note_Data =serializer.data 
         
-        return Response(Json_note_Data)
+        # return Response(Json_note_Data)
 
     if request.method == "PUT": # update Note
-        data = request.data
-        print(data)
+        return updateNote(request,pk)
+        # data = request.data
+        # print(data)
 
-        note = Note.objects.get(id=pk)
-        serializer = NoteSerializer(instance=note, data=data)
+        # note = Note.objects.get(id=pk)
+        # serializer = NoteSerializer(instance=note, data=data)
 
-        if serializer.is_valid():
-            serializer.save()
+        # if serializer.is_valid():
+        #     serializer.save()
 
-        Json_note_Data =serializer.data
+        # Json_note_Data =serializer.data
 
-        return Response(Json_note_Data)
+        # return Response(Json_note_Data)
 
     if request.method == "DELETE": # Delete note
-        note = Note.objects.get(id=pk)
-        note.delete()
-        return Response("Note was deleted!!!")
+        return deleteNote(request,pk)
+        # note = Note.objects.get(id=pk)
+        # note.delete()
+        # return Response("Note was deleted!!!")
