@@ -121,7 +121,7 @@ def getRoutes(request):
 # * /notes url (GET and POST) 
 
 @api_view(["GET","POST"])
-def getNotes(request):
+def NotesListPage(request):
 
     if request.method == "GET":
 
@@ -152,7 +152,7 @@ def getNotes(request):
 # * notes/<id> (GET,PUT,DELETE)
 
 @api_view(["GET","PUT","DELETE"])
-def getNote(request,pk):
+def NotePage(request,pk):
 
     # GET note
     if request.method == "GET": 
