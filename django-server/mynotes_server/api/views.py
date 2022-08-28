@@ -1,3 +1,5 @@
+import re
+
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -48,7 +50,7 @@ def getRoutes(request):
 
 @api_view(["GET"])
 def getNotes(request):
-    notes = Note.objects.all()
+    notes = Note.objects.all().order_by('-updated')
     # print("notes : ------------------------")
     # print(notes)
     serializer = NoteSerializer(notes, many = True)
@@ -65,14 +67,39 @@ def getNote(request,pk):
     Json_note_Data =serializer.data 
     
     return Response(Json_note_Data)
+
 @api_view(["PUT"])
 def updateNote(request , pk):
     data = request.data
     print(data)
+
     note = Note.objects.get(id=pk)
-    serializer = NoteSerializer(note, many = False)
+    serializer = NoteSerializer(instance=note, data=data)
 
     if serializer.is_valid():
         serializer.save()
 
-    return Response()
+    Json_note_Data =serializer.data
+
+    return Response(Json_note_Data)
+
+
+@api_view(["POST"])
+def createNote(request):
+    data = request.data
+    # print(data)
+
+    note = Note.objects.create(
+        body = data["body"]
+    )   
+
+    serializer = NoteSerializer(note, many = False)
+    Json_note_Data =serializer.data  
+    
+    return Response(Json_note_Data)
+
+@api_view(["DELETE"])
+def deleteNote(request,pk):
+    note = Note.objects.get(id=pk)
+    note.delete()
+    return Response("Note was deleted!!!")

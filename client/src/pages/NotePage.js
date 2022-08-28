@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ReactComponent as ArrowLeft } from "../assets/arrow-left.svg";
+import getCookie from "../components/getCookie";
 // import notes from "../assets/data";
+
+// * please check the csrftoken
+// https://www.appsloveworld.com/reactjs/100/5/how-to-use-csrf-token-in-django-restful-api-and-react
+
+var csrftoken = getCookie("csrftoken");
 
 const NotePage = () => {
   //please check this link for navigate
@@ -32,10 +38,11 @@ const NotePage = () => {
   // * This is the function we do put request on API
   const createNote = async () => {
     console.log("Note Created");
-    await fetch(`/api/notes/`, {
+    await fetch(`/api/notes/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken,
       },
       body: JSON.stringify({ ...note, updated: new Date() }),
     });
@@ -43,21 +50,24 @@ const NotePage = () => {
 
   // * This is the function we do put request on API
   const updateNote = async () => {
-    await fetch(`/api/notes/${noteId}`, {
+    await fetch(`/api/notes/${noteId}/update`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken,
       },
-      body: JSON.stringify({ ...note, updated: new Date() }),
+      body: JSON.stringify(note),
     });
+    console.log(note);
   };
 
   // * This is the function we do DELETE request on API
   const deleteNote = async () => {
-    await fetch(`/api/notes/${noteId}`, {
+    await fetch(`/api/notes/${noteId}/delete`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken,
       },
       body: JSON.stringify(note),
     });
